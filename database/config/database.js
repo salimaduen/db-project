@@ -17,5 +17,6 @@ function createDatabase() {
     return sequelize;
 }
 
+const database = createDatabase();
 
-export default createDatabase;
+export { createDatabase, database };

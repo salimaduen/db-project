@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import createDatabase from './database/config/database.js';
+import {createDatabase} from './database/config/database.js';
 
 
 // Route imports
@@ -20,7 +20,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // Middleware 
 app.use(logger('dev'));

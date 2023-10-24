@@ -1,4 +1,6 @@
 import express from 'express';
+import user from '../database/models/User.js';
+
 var router = express.Router();
 
 /* GET users listing. */
