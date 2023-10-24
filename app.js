@@ -19,7 +19,7 @@ dotenv.config();
 var app = express();
 
 // view engine setup
-app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), 'views'));
+app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), '/public/views'));
 app.set('view engine', 'pug');
 
 // Middleware 
