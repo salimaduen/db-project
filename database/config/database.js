@@ -1,5 +1,8 @@
 import { Sequelize } from 'sequelize';
 import dbConfig from './config.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 function createDatabase() {
 
@@ -17,6 +20,15 @@ function createDatabase() {
     return sequelize;
 }
 
-const database = createDatabase();
+async function syncDatabase() {
+    await createDatabase().sync({force:true})
+    .then(() => {
+        console.log('Models have been successfully synced');
+    })
+    .catch( (err) => {
+        console.log('Error: ' + err);
+    });
+}
 
-export { createDatabase, database };
+const database = createDatabase();
+export { createDatabase, syncDatabase, database };

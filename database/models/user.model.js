@@ -27,9 +27,9 @@ User.init(
     }
 );
 
-User.sync()
+await User.sync()
 .then( () => {
-    console.log('Table has been succesfully created');
+    console.log('Table ' + User.tableName + ' has been succesfully created');
 })
 .catch((err) => {
     console.log('Error creating table: ' + err);

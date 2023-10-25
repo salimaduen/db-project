@@ -1,5 +1,5 @@
 import express from 'express';
-import user from '../database/models/User.js';
+import user from '../database/models/user.model.js';
 
 var router = express.Router();
 

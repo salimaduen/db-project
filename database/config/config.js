@@ -1,8 +1,10 @@
 export default {
     testing: {
-        dialect: 'sqlite',
-        storage: './database.sqlite',
-        logging: false
+        username: 'test',
+        password: '12345',
+        database: 'store',
+        dialect: 'mysql',
+        logging: true
     },
     development: {
         username: "your_username2",

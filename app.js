@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import {createDatabase} from './database/config/database.js';
+import {createDatabase, syncDatabase} from './database/config/database.js';
 
 
 // Route imports
@@ -29,13 +29,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')));
 
-// Database connection
+// Database Authentication
 createDatabase().authenticate().then( () => {
   console.log('Database connection has been established');
 })
 .catch((err) => {
   console.log('Unable to connect to database:', err);
 });
+
+// Sync models
+if (process.env.NODE_ENV === 'testing') {
+  syncDatabase();
+}
 
 // Routes
 app.use('/', indexRouter);
