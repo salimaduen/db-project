@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { database as sequelize} from '../config/database.js';
+import { database as sequelize} from '../../database.js';
 
 class User extends Model {
     static async getAllUsers() {

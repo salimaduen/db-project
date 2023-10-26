@@ -3,7 +3,8 @@ export default {
         username: 'test',
         password: '12345',
         database: 'store',
-        dialect: 'mysql',
+        host: 'localhost',
+        dialect: 'mariadb',
         logging: true
     },
     development: {
@@ -11,16 +12,6 @@ export default {
         password: "your_password",
         database: "your_database",
         host: "localhost",
-        dialect: "mysql",
-        define: {
-          underscored: true,
-          timestamps: false
-        },
-        pool: {
-            max: 3,
-            min: 0,
-            acquire: 15000,
-            idle: 5000
-        }
+        dialect: "mariadb"
       }
 };

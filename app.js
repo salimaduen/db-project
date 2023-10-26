@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import {createDatabase, syncDatabase} from './database/config/database.js';
+import {createDatabase, syncDatabase} from './database/database.js';
 
 
 // Route imports
@@ -38,9 +38,9 @@ createDatabase().authenticate().then( () => {
 });
 
 // Sync models
-if (process.env.NODE_ENV === 'testing') {
-  syncDatabase();
-}
+// if (process.env.NODE_ENV === 'testing') {
+//   syncDatabase();
+// }
 
 // Routes
 app.use('/', indexRouter);
