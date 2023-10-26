@@ -1,7 +1,9 @@
 import dbConfig from './config/config.js';
 import mariadb from 'mariadb';
 import dotenv from 'dotenv';
-import { readFile } from 'fs';
+import { readFile, readdir } from 'fs/promises';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 dotenv.config();
 
@@ -12,7 +14,8 @@ class storeDB {
 
         this.pool = mariadb.createPool({
             host: config.host,
-            user: config.user,
+            user: config.username,
+            database: config.database,
             password: config.password,
             connectionLimit: 5
         });
@@ -27,15 +30,75 @@ class storeDB {
     }
 
     /**
-     * Function will sync an individual table to the db
-     * @param {String} table - the string file location to the table
+     * Function will create an individual table to the db.
+     * @param {string} table - path/location to the table
      */
     async syncTable(table) {
 
     }
 
     async sync() {
+
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.join(path.dirname(__filename), '/models/');
+
+        const queue = await this.#getModelDirs(__dirname);
+
+        if ( !(queue.length >= 1) ) {
+            return console.log('no models found at ' + __dirname);
+        }
         
+
+        while (queue.length > 0) {
+            let curr = queue.shift();
+            await this.syncSQL(curr);
+        }
+
+    }
+
+
+
+    /**
+     * Function will read all dirs in the received path and
+     * add them to a queue
+     * @param {string} __dirname - path to models dir
+     * @returns a queue with all the model dirs
+     */
+    async #getModelDirs(__dirname) {
+        const queue = [];
+        const files = await readdir(__dirname);
+        files.forEach( (file) => { 
+            queue.push(path.join(__dirname, file, '/'));
+        });
+        return queue;
+    }
+
+
+    /**
+     * function will look for model sql files on each folder
+     * and create table if not exists.
+     * @param {string} __dirname - path to a model folder
+     */
+    async syncSQL(__dirname) {
+        const files = await readdir(__dirname);
+
+        for (const file of files) {
+            if (!(path.extname(path.join(__dirname, file)) === '.sql')) {
+                // if file extension not .sql goto next
+                continue;
+            }
+            try {
+                const table = await readFile(path.join(__dirname, file), 'utf-8');
+                // TODO - maybe add a function that checks if query is ok
+                if (table.length > 0) {
+                    const conn = this.getConnection();
+                    (await conn).query(table);
+                    console.log(table);
+                }
+            } catch (error) {
+                console.log('Error reading sql file: ' + error);
+            }
+        }
     }
 }
 

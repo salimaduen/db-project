@@ -1,8 +1,8 @@
 export default {
     testing: {
-        username: 'test',
+        username: 'user',
         password: '12345',
-        database: 'store',
+        database: 'db',
         host: 'localhost',
         dialect: 'mariadb',
         logging: true
