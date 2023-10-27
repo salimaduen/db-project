@@ -54,7 +54,7 @@ class storeDB {
 
         while (queue.length > 0) {
             let curr = queue.shift();
-            await this.syncSQL(curr);
+            await this.#syncSQL(curr);
         }
 
     }
@@ -85,22 +85,34 @@ class storeDB {
         const files = await readdir(__dirname);
 
         for (const file of files) {
-            if (!(path.extname(path.join(__dirname, file)) === '.sql')) {
-                // TODO add check if file is .model.sql
+            const curr_path = path.join(__dirname, file);
+            if (this.#isFileModel(file)) {
                 // if file extension not .sql goto next
-                continue;
-            }
-            try {
-                const table = await readFile(path.join(__dirname, file), 'utf-8');
-                // TODO - maybe add a function that checks if query is ok
-                if (table.length > 0) {
-                    const conn = this.getConnection();
-                    (await conn).query(table);
-                    console.log(table);
+                try {
+                    console.log('LLEGO AQUI ' + file);
+                    const table = await readFile(path.join(__dirname, file), 'utf-8');
+                    // TODO - maybe add a function that checks if query is ok
+                    if (table.length > 0) {
+                        const conn = this.getConnection();
+                        (await conn).query(table);
+                        console.log(table);
+                    }
+                } catch (error) {
+                    console.log('Error reading sql file: ' + error);
                 }
-            } catch (error) {
-                console.log('Error reading sql file: ' + error);
             }
+
+        }
+    }
+
+    #isFileModel(__filename) {
+        const nameParts = __filename.split('.');
+        if (nameParts.length != 3) {
+            return false;
+        } else if (nameParts[nameParts.length - 1] === 'sql' && nameParts[nameParts.length - 2] === 'model') {
+            return true;
+        } else {
+            return false;
         }
     }
 }
