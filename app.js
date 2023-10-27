@@ -6,11 +6,12 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-
+import storeDb from './database/database.js';
 
 // Route imports
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
+import { exit } from 'process';
 
 // load .env variables
 dotenv.config();
@@ -29,20 +30,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')));
 
 // // Database Authentication
-// createDatabase().authenticate().then( () => {
-//   console.log('Database connection has been established');
-// })
-// .catch((err) => {
-//   console.log('Unable to connect to database:', err);
-// });
+storeDb.getConnection()
+.then( () => {
+  console.log('Database connection has been authenticated');
+})
+.catch((err) => {
+  console.log('Unable to authenticate database ' + err);
+  exit(-1);
+});
 
 // Sync models
-// if (process.env.NODE_ENV === 'testing') {
-//   syncDatabase();
-// }
+if (process.env.NODE_ENV === 'development') {
+      await storeDb.sync();
+}
 
-import storeDb from './database/database.js';
-await storeDb.sync();
+
+
 
 // Routes
 app.use('/', indexRouter);
