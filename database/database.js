@@ -1,22 +1,20 @@
-import dbConfig from './config/config.js';
 import mariadb from 'mariadb';
-import dotenv from 'dotenv';
 import { readFile, readdir } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import dotenv from 'dotenv';
 
+// load env variables
 dotenv.config();
+
 
 class storeDB {
      constructor() {
-        const env = process.env.NODE_ENV || 'development';
-        const config = dbConfig[env];
-
         this.pool = mariadb.createPool({
-            host: config.host,
-            user: config.username,
-            database: config.database,
-            password: config.password,
+            host: process.env.DB_HOST || 'localhost',
+            user: process.env.DB_USERNAME || 'default',
+            database: process.env.DB_NAME || 'database',
+            password: process.env.DB_PASSWORD || '12345',
             connectionLimit: 5
         });
     }
@@ -37,6 +35,11 @@ class storeDB {
 
     }
 
+    /**
+     * 
+     * Sync function will look at models folder, .model.sql files
+     * and create table if not exists.
+     */
     async sync() {
 
         const __filename = fileURLToPath(import.meta.url);
@@ -84,6 +87,7 @@ class storeDB {
 
         for (const file of files) {
             if (!(path.extname(path.join(__dirname, file)) === '.sql')) {
+                // TODO add check if file is .model.sql
                 // if file extension not .sql goto next
                 continue;
             }
