@@ -81,7 +81,7 @@ class storeDB {
      * and create table if not exists.
      * @param {string} __dirname - path to a model folder
      */
-    async syncSQL(__dirname) {
+    async #syncSQL(__dirname) {
         const files = await readdir(__dirname);
 
         for (const file of files) {
