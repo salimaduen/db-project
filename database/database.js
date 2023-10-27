@@ -87,7 +87,6 @@ class storeDB {
         for (const file of files) {
             const curr_path = path.join(__dirname, file);
             if (this.#isFileModel(file)) {
-                // if file extension not .sql goto next
                 try {
                     console.log('LLEGO AQUI ' + file);
                     const table = await readFile(path.join(__dirname, file), 'utf-8');
@@ -105,6 +104,11 @@ class storeDB {
         }
     }
 
+    /**
+     * function will check if the file is .model.sql
+     * @param {string} __filename
+     * @returns if it's a valid file model true/false
+     */
     #isFileModel(__filename) {
         const nameParts = __filename.split('.');
         if (nameParts.length != 3) {
