@@ -60,7 +60,6 @@ class storeDB {
     }
 
 
-
     /**
      * Function will read all dirs in the received path and
      * add them to a queue
