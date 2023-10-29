@@ -2,20 +2,42 @@ import database from '../../database.js';
 
 class Product {
 
-    static async getProduct(productSlug) {
-        // get a specific product
+    /**
+     * 
+     * @param {string} id 
+     * @param {string} name 
+     * @param {string} description 
+     * @param {int} price 
+     * @param {int} stockQuantity 
+     * @param {int} categoryId 
+     */
+    constructor(id, name, price, stockQuantity, description = null, categoryId = null ) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.price = price;
+            this.stockQuantity = stockQuantity;
+            this.categoryId = categoryId;
+    }
+
+    static async findBySlug(productSlug) {
+        // get product by slug
+    }
+
+    static async findById(productId) {
+        // get product by id
     }
 
     static async getAllProducts() {
         // get all products
     }
 
-    static async addProduct() {
+    static async save() {
         // add product to db
     }
 
-    static async modifyProduct() {
-        // modify an existing product
+    static async update() {
+        // update an existing product
     }
 
     /**
