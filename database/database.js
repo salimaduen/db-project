@@ -43,7 +43,7 @@ class storeDB {
     async sync() {
 
         const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.join(path.dirname(__filename), '/models/');
+        const __dirname = path.join(path.dirname(__filename), '../models/');
 
         const queue = await this.#getModelDirs(__dirname);
 
