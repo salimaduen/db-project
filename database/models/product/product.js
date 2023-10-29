@@ -2,15 +2,27 @@ import database from '../../database.js';
 
 class Product {
 
-    async addProduct() {
+    static async getProduct(productSlug) {
+        // get a specific product
+    }
+
+    static async getAllProducts() {
+        // get all products
+    }
+
+    static async addProduct() {
         // add product to db
+    }
+
+    static async modifyProduct() {
+        // modify an existing product
     }
 
     /**
      * function will create a slug based on the product name
      * @param {String} productName 
      */
-    createSlug(productName) {
+    #createSlug(productName) {
         // remove any special characters from string
         let slug = productName.replace(/[^\w\s-]/g, '');
 

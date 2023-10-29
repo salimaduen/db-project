@@ -87,17 +87,17 @@ class storeDB {
         for (const file of files) {
             const curr_path = path.join(__dirname, file);
             if (this.#isFileModel(file)) {
+                const conn = this.getConnection();
                 try {
-                    console.log('LLEGO AQUI ' + file);
                     const table = await readFile(path.join(__dirname, file), 'utf-8');
                     // TODO - maybe add a function that checks if query is ok
                     if (table.length > 0) {
-                        const conn = this.getConnection();
                         (await conn).query(table);
-                        console.log(table);
                     }
                 } catch (error) {
                     console.log('Error reading sql file: ' + error);
+                } finally {
+                    if (conn) (await conn).release();
                 }
             }
 
