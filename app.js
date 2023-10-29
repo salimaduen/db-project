@@ -7,11 +7,13 @@ import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import storeDb from './database/database.js';
+import { exit } from 'process';
 
 // Route imports
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
-import { exit } from 'process';
+import productsRouter from './routes/products.js';
+
 
 // load .env variables
 dotenv.config();
@@ -19,7 +21,7 @@ dotenv.config();
 var app = express();
 
 // view engine setup
-app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), '/public/views'));
+app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), 'public', 'views'));
 app.set('view engine', 'pug');
 
 // Middleware 
@@ -44,12 +46,15 @@ if (process.env.NODE_ENV === 'development') {
       await storeDb.sync();
 }
 
-
+import t from './database/models/product/product.js';
+const b = new t();
+console.log(b.createSlug('Samsung 27 cu. ft. 3-Door French Door Refrigerator'));
 
 
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/products', productsRouter);
 
 
 
