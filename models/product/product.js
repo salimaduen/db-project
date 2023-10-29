@@ -1,4 +1,4 @@
-import database from '../../database.js';
+import storeDB from '../../database/database.js';
 
 class Product {
 
@@ -25,11 +25,31 @@ class Product {
     }
 
     static async findById(productId) {
-        // get product by id
+        let product = null;
+        const conn = await storeDB.getConnection();
+        const query = 'SELECT * FROM Product WHERE ProductID = ?';
+        try {
+            product = await conn.query(query, [productId]);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+        return product;
     }
 
     static async getAllProducts() {
-        // get all products
+        let product = null;
+        const conn = await storeDB.getConnection();
+        const query = 'SELECT * FROM Product';
+        try {
+            product = await conn.query(query);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+        return product;
     }
 
     static async save() {

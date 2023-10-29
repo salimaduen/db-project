@@ -12,7 +12,7 @@ import { exit } from 'process';
 // Route imports
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
-import productsRouter from './routes/products.js';
+import productsRouter from './routes/productRoute.js';
 
 
 // load .env variables
@@ -45,10 +45,6 @@ storeDb.getConnection()
 if (process.env.NODE_ENV === 'development') {
       await storeDb.sync();
 }
-
-import t from './database/models/product/product.js';
-const b = new t();
-console.log(b.createSlug('Samsung 27 cu. ft. 3-Door French Door Refrigerator'));
 
 
 // Routes
