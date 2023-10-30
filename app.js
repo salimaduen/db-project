@@ -6,12 +6,14 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import {createDatabase, syncDatabase} from './database/config/database.js';
-
+import storeDb from './database/database.js';
+import { exit } from 'process';
 
 // Route imports
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
+import productsRouter from './routes/productRoute.js';
+
 
 // load .env variables
 dotenv.config();
@@ -19,7 +21,7 @@ dotenv.config();
 var app = express();
 
 // view engine setup
-app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), '/public/views'));
+app.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), 'views'));
 app.set('view engine', 'pug');
 
 // Middleware 
@@ -29,22 +31,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')));
 
-// Database Authentication
-createDatabase().authenticate().then( () => {
-  console.log('Database connection has been established');
+// // Database Authentication
+storeDb.getConnection()
+.then( () => {
+  console.log('Database connection has been authenticated');
 })
 .catch((err) => {
-  console.log('Unable to connect to database:', err);
+  console.log('Unable to authenticate database ' + err);
+  exit(-1);
 });
 
 // Sync models
-if (process.env.NODE_ENV === 'testing') {
-  syncDatabase();
+if (process.env.NODE_ENV === 'development') {
+      await storeDb.sync();
 }
+
 
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/products', productsRouter);
 
 
 
