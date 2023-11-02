@@ -3,5 +3,15 @@ extends layout
 block content 
     h1 Products Page!
     p This is the products page!
-    each product in products
-        li= product.Name
+
+    - for (let i = 0; i < columns; i++)
+        .row
+            - for (let j = 0; j < (i+1) % 4; j++)
+                .column
+                    a(href='/')
+                        - let currProduct = products[(i*4) + j];
+                        img(src='/', alt=currProduct.Name)
+                        h2= currProduct.Name 
+                        p= currProduct.Price
+        
+        

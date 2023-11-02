@@ -7,8 +7,16 @@ class ProductController {
             // TODO update so there's a MAX. per page
             const products = await Product.getAllProducts();
 
+            let columns = 0;
+
+            if ( (products.length % 4) === 0) {
+                columns = products.length / 4;
+            } else {
+                columns = Math.floor((products.length / 4)) + (products.length % 4);
+            }
+            console.log(typeof(columns));
             // Send JSON of products TODO: render them to the page
-            res.render('products', { products: products });
+            res.render('products', { products: products, columns: columns });
         } catch (error) {
             console.error(error);
             res.status(500);
