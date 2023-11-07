@@ -7,7 +7,6 @@ var router = express.Router();
 /* GET products listing. */
 
 router.get('/', productController.getProducts);
-router.get('/:id', productController.getProductById);
 router.get('/:slug', productController.getProductBySlug);
 
 

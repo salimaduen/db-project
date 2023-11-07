@@ -14,7 +14,7 @@ class ProductController {
             } else {
                 columns = Math.floor((products.length / 4)) + (products.length % 4);
             }
-            console.log(typeof(columns));
+        
             // Send JSON of products TODO: render them to the page
             res.render('products', { products: products, columns: columns });
         } catch (error) {
@@ -26,11 +26,14 @@ class ProductController {
     async getProductBySlug(req, res) {
         const productSlug = req.params.slug;
         try {
+            console.log('AKI');
             const product = await Product.findBySlug(productSlug);
-            if (product) {
+            if (product.length > 0) {
                 res.status(200);
+                res.render('productPage', {product: product[0]});
             } else {
                 res.status(404);
+                res.render('error');
             }
         } catch (error) {
             console.error(error);

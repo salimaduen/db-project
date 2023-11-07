@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    .product-container 
+        .product-image
+            img(src='/', alt='Product Image')
+        .product-details 
+            h1.product-name= product.Name
+            p.product-description= product.Description
+            p.product-price= product.Price
+            p.stock-quantity In Stock: #{product.StockQuantity}
+            

@@ -2,6 +2,8 @@ import storeDB from '../../database/database.js';
 
 class Product {
 
+    static tableName = 'Product';
+
     /**
      * 
      * @param {string} id 
@@ -11,9 +13,10 @@ class Product {
      * @param {int} stockQuantity 
      * @param {int} categoryId 
      */
-    constructor(id, name, price, stockQuantity, description = null, categoryId = null ) {
+    constructor(id, name, price, stockQuantity=0, description = null, categoryId = null ) {
             this.id = id;
             this.name = name;
+            this.slug = this.#createSlug
             this.description = description;
             this.price = price;
             this.stockQuantity = stockQuantity;
@@ -21,7 +24,18 @@ class Product {
     }
 
     static async findBySlug(productSlug) {
-        // get product by slug
+        let product = null;
+        const conn = await storeDB.getConnection();
+        const query = 'SELECT * FROM Product WHERE Slug = ?';
+        try {
+                product = await conn.query(query, productSlug);
+                //console.log(product);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+        return product;
     }
 
     static async findById(productId) {
@@ -41,7 +55,7 @@ class Product {
     static async getAllProducts() {
         let product = null;
         const conn = await storeDB.getConnection();
-        const query = 'SELECT * FROM Product';
+        const query = `SELECT * FROM ${Product.tableName}`;
         try {
             product = await conn.query(query);
         } catch (error) {
@@ -54,6 +68,9 @@ class Product {
 
     static async save() {
         // add product to db
+        const query = `INSERT INTO ${this.tableName}(ProductID, Name, Description, Price, Slug, StockQuantity, CategoryID)
+                       VALUES (? ? ? ? ? ? ?)`
+        
     }
 
     static async update() {
@@ -64,7 +81,7 @@ class Product {
      * function will create a slug based on the product name
      * @param {String} productName 
      */
-    #createSlug(productName) {
+    async #createSlug(productName) {
         // remove any special characters from string
         let slug = productName.replace(/[^\w\s-]/g, '');
 

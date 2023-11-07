@@ -7,9 +7,9 @@ block content
     - for (let i = 0; i < columns; i++)
         .row
             - for (let j = 0; j < (i+1) % 4; j++)
+                - let currProduct = products[(i*4) + j];
                 .column
-                    a(href='/')
-                        - let currProduct = products[(i*4) + j];
+                    a(href=`/products/${currProduct.Slug}`)
                         img(src='/', alt=currProduct.Name)
                         h2= currProduct.Name 
                         p= currProduct.Price
