@@ -2,7 +2,18 @@ doctype html
 html
   head
     title Dashboard
-    link(rel='stylesheet', href='/stylesheets/styles.css')
+    link(rel='stylesheet', href='/stylesheets/dashboard.css')
   body
-    h1 Dashboard
-    p Welcome, #{user.Username}!
+    header
+      h1 Dashboard
+    .container
+      p Welcome, #{user.Username}!
+      a(href='/products') Go to Products
+
+      if user.Username == 'admin'
+        h2 Welcome to the admin dashboard
+        ul.admin-menu
+          li.admin-menu-item
+            a.admin-menu-link(href='/admin/update-product') Update Product
+          li.admin-menu-item
+            a.admin-menu-link(href='/admin/view-all-orders') View All Orders

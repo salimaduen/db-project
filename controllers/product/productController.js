@@ -17,7 +17,7 @@ class ProductController {
             }
 
             // Send JSON of products TODO: render them to the page
-            res.render('products', { products: products, rows: rows });
+            res.render('products', { products: products, rows: rows , stylesheets: '/stylesheets/products.css'});
         } catch (error) {
             console.error(error);
             res.status(500);

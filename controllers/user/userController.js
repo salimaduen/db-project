@@ -12,7 +12,6 @@ const dashboard = async (req, res) => {
     const results = await conn.query(query, [req.session.userID]);
     if (results.length > 0) {
       const user = results[0];
-      console.log(user);
       res.render('dashboard', { user});
     } else {
       res.redirect('login');
