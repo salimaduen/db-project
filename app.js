@@ -1,6 +1,7 @@
 // Dependencies
 import createError from 'http-errors';
 import express from 'express';
+import session from 'express-session';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -11,8 +12,9 @@ import { exit } from 'process';
 
 // Route imports
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
 import productsRouter from './routes/productRoute.js';
+import authRouter from './routes/authRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 
 // load .env variables
@@ -30,6 +32,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')));
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: true,
+}));
 
 // // Database Authentication
 storeDb.getConnection()
@@ -49,7 +56,8 @@ if (process.env.NODE_ENV === 'development') {
 
 // Routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', authRouter);
+app.use('/dashboard', userRouter);
 app.use('/products', productsRouter);
 
 
