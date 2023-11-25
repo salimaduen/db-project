@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS Product (
     Slug VARCHAR(255) NOT NULL,
     StockQuantity INT NOT NULL,
     CategoryID INT,
-    FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+    FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID) ON DELETE SET NULL,
     CONSTRAINT SLUG_UNIQUE UNIQUE (Slug)
 );
