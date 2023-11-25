@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import storeDb from './database/database.js';
 import { exit } from 'process';
+import authMiddleware from './middleware/authMiddleware.js';
 
 // Route imports
 import indexRouter from './routes/index.js';
@@ -37,6 +38,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+app.use(authMiddleware);
 
 // // Database Authentication
 storeDb.getConnection()
