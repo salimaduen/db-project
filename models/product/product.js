@@ -16,7 +16,7 @@ class Product {
     constructor(id, name, price, stockQuantity=0, description = null, categoryId = null ) {
             this.id = id;
             this.name = name;
-            this.slug = this.#createSlug
+            this.slug = this.#createSlug(name)
             this.description = description;
             this.price = price;
             this.stockQuantity = stockQuantity;
@@ -66,10 +66,19 @@ class Product {
         return product;
     }
 
-    static async save() {
+    async save() {
         // add product to db
-        const query = `INSERT INTO ${this.tableName}(ProductID, Name, Description, Price, Slug, StockQuantity, CategoryID)
-                       VALUES (? ? ? ? ? ? ?)`
+        const query = `INSERT INTO ${Product.tableName}(ProductID, Name, Description, Price, Slug, StockQuantity, CategoryID)
+                       VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const conn = await storeDB.getConnection();
+        try {
+            await conn.query(query, [ this.id, this.name, this.description, this.price, this.slug, this.stockQuantity, this.categoryId]);
+            await conn.commit();
+        } catch(error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release;
+        }
         
     }
 
@@ -81,7 +90,7 @@ class Product {
      * function will create a slug based on the product name
      * @param {String} productName 
      */
-    async #createSlug(productName) {
+    #createSlug(productName) {
         // remove any special characters from string
         let slug = productName.replace(/[^\w\s-]/g, '');
 
