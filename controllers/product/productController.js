@@ -27,11 +27,10 @@ class ProductController {
     async getProductBySlug(req, res) {
         const productSlug = req.params.slug;
         try {
-            console.log('AKI');
             const product = await Product.findBySlug(productSlug);
             if (product.length > 0) {
                 res.status(200);
-                res.render('productPage', {product: product[0]});
+                res.render('productPage', {product: product[0], stylesheets: '/stylesheets/products.css'});
             } else {
                 res.status(404);
                 res.render('error');

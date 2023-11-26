@@ -9,4 +9,5 @@ block content
             p.product-description= product.Description
             p.product-price= product.Price
             p.stock-quantity In Stock: #{product.StockQuantity}
+            a(href=`/add-to-cart/${product.Slug}`, class='add-to-cart-button') Add to Cart
             

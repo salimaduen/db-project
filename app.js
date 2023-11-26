@@ -16,6 +16,7 @@ import indexRouter from './routes/index.js';
 import productsRouter from './routes/productRoute.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
 
 
 // load .env variables
@@ -57,8 +58,9 @@ if (process.env.NODE_ENV === 'development') {
 
 
 // Routes
-app.use('/', indexRouter);
-app.use('/', authRouter);
+app.use(indexRouter);
+app.use(authRouter);
+app.use(cartRoutes);
 app.use('/dashboard', userRouter);
 app.use('/products', productsRouter);
 
