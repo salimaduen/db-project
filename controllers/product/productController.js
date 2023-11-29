@@ -1,23 +1,36 @@
 import Product from '../../models/product/product.js';
+import Category from '../../models/category/category.js';
+
+function calculateRows(productsLength) {
+    let rows = 0;
+
+    if ( (productsLength % 4) === 0) {
+        rows = productsLength / 4;
+    } else {
+        rows = Math.floor((productsLength / 4)) + 1;
+    }
+
+    return rows;
+}
 
 
 class ProductController {
+    
+    test() {
+        return 1;
+    }
 
     async getProducts(req, res) {
         try {
             // TODO update so there's a MAX. per page
             const products = await Product.getAllProducts();
 
-            let rows = 0;
+            let rows = calculateRows(products.length);
 
-            if ( (products.length % 4) === 0) {
-                rows = products.length / 4;
-            } else {
-                rows = Math.floor((products.length / 4)) + 1;
-            }
-
+            const categories = await Category.getAllCategories();
             // Send JSON of products TODO: render them to the page
-            res.render('products', { products: products, rows: rows , stylesheets: '/stylesheets/products.css'});
+            console.log(categories);
+            res.render('products', { products: products, rows: rows , categories: categories, stylesheets: '/stylesheets/products.css'});
         } catch (error) {
             console.error(error);
             res.status(500);
@@ -60,6 +73,24 @@ class ProductController {
     async addProduct(req, res) {
         // add product code
     }
+
+    async filterRedirect(req, res) {
+        const category = req.body.category;
+        res.redirect(`/products/category/${category}`);
+    }
+
+    async filterByCategory(req, res) {
+        const category = req.params.category;
+        const products = await Product.getProductsByCategory(category);
+        console.log(products);
+        const rows = calculateRows(products.length);
+        const categories = await Category.getAllCategories();
+
+        
+        res.render('products', {products: products, rows: rows , categories: categories, stylesheets: '/stylesheets/products.css'})
+    }
+
+
 }
 
 export default new ProductController();

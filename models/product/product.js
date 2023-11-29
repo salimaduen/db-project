@@ -52,6 +52,26 @@ class Product {
         return product;
     }
 
+    static async getProductsByCategory(categoryName) {
+        const conn = await storeDB.getConnection();
+        let query = `SELECT CategoryID FROM Category WHERE Name = ?`;
+        let results = null;
+        try {
+            const categoryID = (await conn.query(query, [categoryName]))[0].CategoryID;
+            query = `SELECT Product.Name, Product.Price
+                     FROM ProductCategory
+                     INNER JOIN Product ON ProductCategory.ProductID = Product.ProductID
+                     WHERE ProductCategory.CategoryID = ?`;
+            results = await conn.query(query, [categoryID]);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+
+        return results;
+    }
+
     static async getAllProducts() {
         let product = null;
         const conn = await storeDB.getConnection();
@@ -72,6 +92,10 @@ class Product {
                        VALUES (?, ?, ?, ?, ?, ?, ?)`;
         const conn = await storeDB.getConnection();
         try {
+            // if category id provided, add category
+            if (this.categoryId) {
+                Product.addCategory(this.id, this.categoryId);
+            }
             await conn.query(query, [ this.id, this.name, this.description, this.price, this.slug, this.stockQuantity, this.categoryId]);
             await conn.commit();
         } catch(error) {
@@ -85,6 +109,24 @@ class Product {
     static async update() {
         // update an existing product
     }
+
+    /**
+     * Function to add category to a product
+     * @param {int} productID 
+     * @param {int} categoryID 
+     */
+    static async addCategory(productID, categoryID) {
+        const conn = await storeDB.getConnection();
+        const query = 'INSERT INTO ProductCategory(ProductID, CategoryID) VALUES = (?, ?)';
+        try {
+            await conn.query(query, [productID, categoryID]);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+    }
+
 
     /**
      * function will create a slug based on the product name

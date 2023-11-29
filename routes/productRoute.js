@@ -8,6 +8,8 @@ var router = express.Router();
 
 router.get('/', productController.getProducts);
 router.get('/:slug', productController.getProductBySlug);
+router.get('/category/:category', productController.filterByCategory);
+router.post('/filter-by-category', productController.filterRedirect);
 
 
 export default router;

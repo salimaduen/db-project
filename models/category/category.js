@@ -16,6 +16,18 @@ class Category {
     }
 
     static async getAllCategories() {
+        const conn = await storeDB.getConnection();
+        const query = `SELECT Name FROM ${Category.tableName}`;
+        let categories = null;
+        try {
+            categories = await conn.query(query);
+        } catch(error){
+            console.error(error);
+        } finally {
+            if (conn) await conn.release();
+        }
+
+        return categories;
         // get all available categories
     }
 

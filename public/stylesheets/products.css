@@ -91,6 +91,13 @@
     transition: background-color 0.3s;
   }
   
-  .add-to-cart-button:hover {
+.add-to-cart-button:hover {
     background-color: #219d54;
-  }
+}
+
+#categoryDropdown {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

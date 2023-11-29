@@ -4,6 +4,13 @@ block content
     h1 Products Page!
     p This is the products page!
 
+    form(id='categoryForm', action='/products/filter-by-category', method='post')
+        select(id='categoryDropdown', name='category')
+            option(value='') All Categories
+            - for (let category of categories)
+                option(value=category.Name)= category.Name
+        button(type='submit') Filter
+
     - let l = products.length;
     - for (let i = 0; i < rows; i++)
         .row
