@@ -22,10 +22,10 @@ class CartItem {
      * @returns {boolean}
      */
     async #isItemInCart(conn) {
-        const query = 'SELECT * FROM CartItem WHERE ProductID = ?';
+        const query = 'SELECT * FROM CartItem WHERE ProductID = ? AND CartID = ?';
         let isInCart = true;
         try {
-            const results = await conn.query(query, [this.productID]);
+            const results = await conn.query(query, [this.productID, this.cartID]);
             if (results.length == 0) {
                 isInCart = false;
             }
@@ -44,7 +44,7 @@ class CartItem {
     async save() {
         const conn = await storeDB.getConnection();
         let query = '';
-
+        console.log(`CART ID: ${this.cartID} AND PRODUCTID: ${this.productID}`);
         try {
             
             // first make sure there is enough stock
@@ -60,17 +60,18 @@ class CartItem {
                 query = 'INSERT INTO CartItem(CartID, ProductID, Quantity) VALUES(?, ?, ?)';
                 conn.query(query, [this.cartID, this.productID, this.quantity]);
             } else {
-                query = 'SELECT Quantity FROM CartItem WHERE ProductID = ?';
+                query = 'SELECT Quantity FROM CartItem WHERE ProductID = ? AND CartID = ?';
                 // if item is in cart get the current quantity
-                this.quantity += (await conn.query(query, [this.productID]))[0].Quantity;
+                this.quantity += (await conn.query(query, [this.productID, this.cartID]))[0].Quantity;
                 if (this.quantity > stock) {
+                    console.log(`QUANTITY: ${this.quantity} STOCK: ${stock}`);
                     console.log('Not enough stock');
                     return false;
                 }
 
                 // update quantity
-                query = 'UPDATE CartItem SET Quantity = ? WHERE ProductID = ?';
-                conn.query(query, [this.quantity, this.productID]);
+                query = 'UPDATE CartItem SET Quantity = ? WHERE ProductID = ? AND CartID = ?';
+                conn.query(query, [this.quantity, this.productID, this.cartID]);
             }
 
         } catch(error) {
