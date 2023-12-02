@@ -112,12 +112,12 @@ class Product {
 
     /**
      * Function to add category to a product
-     * @param {int} productID 
-     * @param {int} categoryID 
+     * @param {string} productID 
+     * @param {string} categoryID 
      */
     static async addCategory(productID, categoryID) {
         const conn = await storeDB.getConnection();
-        const query = 'INSERT INTO ProductCategory(ProductID, CategoryID) VALUES = (?, ?)';
+        const query = 'INSERT INTO ProductCategory(ProductID, CategoryID) VALUES (?, ?)';
         try {
             await conn.query(query, [productID, categoryID]);
         } catch (error) {

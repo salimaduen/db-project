@@ -64,7 +64,6 @@ class CartItem {
                 // if item is in cart get the current quantity
                 this.quantity += (await conn.query(query, [this.productID, this.cartID]))[0].Quantity;
                 if (this.quantity > stock) {
-                    console.log(`QUANTITY: ${this.quantity} STOCK: ${stock}`);
                     console.log('Not enough stock');
                     return false;
                 }
