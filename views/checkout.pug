@@ -1,0 +1,23 @@
+doctype html
+html
+    head
+        title Checkout
+        link(rel="stylesheet", href="/stylesheets/checkout.css")
+    body
+        h1 Checkout
+    
+    form(action="/checkout" method="post")
+        .form-group
+            label(for="paymentMethod") Payment Method
+            select#paymentMethod(name="paymentMethod" required)
+                option(value="") Select Payment Method
+                option(value="Credit Card") Credit Card
+                option(value="Debit Card") Debit Card
+        .form-group
+            label(for="cardNumber") Card Number
+            input#cardNumber(name="cardNumber" type="text" required)
+        .form-group
+            label(for="expiryDate") Expiry Date
+            input#expiryDate(name="expiryDate" type="date" required)
+        .form-group
+            button.submit-button(type="submit") Complete Payment
