@@ -115,6 +115,21 @@ class Cart {
         return cartItems;
     }
 
+    static async getTotalPrice(userID) {
+        const conn = await storeDB.getConnection();
+        try {
+            const result = await conn.query('SELECT TotalPrice FROM Cart WHERE UserID = ?', [userID]);
+            return result[0].TotalPrice;
+        } catch (error) {
+            console.error(error);
+            return 0; 
+        } finally {
+            if (conn) await conn.release();
+        }
+    }
+    
+    
+
     static async removeProduct() {
 
     }

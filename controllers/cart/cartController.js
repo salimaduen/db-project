@@ -15,8 +15,10 @@ class cartController {
 
     async getCart(req, res) {
         const items = await Cart.getCartItems(req.session.userID);
-        res.render('cart', {items: items, stylesheets: '/stylesheets/cart.css'});
-    }
+        const totalPrice = await Cart.getTotalPrice(req.session.userID);
+        res.render('cart', { items: items, totalPrice: totalPrice, stylesheets: '/stylesheets/cart.css' });
+    }    
+    
 }
 
 export default new cartController;

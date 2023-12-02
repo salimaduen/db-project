@@ -2,9 +2,8 @@ extends layout
 
 block content 
     h1 Your Shopping Cart
-    - let total = 0.0;
-    if Object.keys(items).length > 0
-        - for (let item of items)
+    if items.length > 0
+        each item in items
             .cart-item
                 h2= item.Name
                 p Price: #{item.Price}
@@ -13,7 +12,8 @@ block content
                 - total += parseFloat(item.Price);
                 - console.log(`CURR : ${item.Price} TOTAL : ${total}`);
 
-        p.cart-total=total.toFixed(2)
-
+        p.cart-total  #{totalPrice}
+        form(action="/checkout" method="get")
+            button.buy-now(type="submit") Buy Now
     else
         p Your cart is empty

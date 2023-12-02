@@ -37,7 +37,7 @@ exports.register = (req, res) => {
 };
 
 exports.registerPost = async (req, res) => {
-  const { username, email, firstname, lastname, address, phone, password, paymentmethod, cardnumber, expirydate } = req.body;
+  const { username, email, firstname, lastname, address, phone, password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password + salt, 10);
   let conn;
@@ -46,7 +46,6 @@ exports.registerPost = async (req, res) => {
     conn = await db.getConnection();
     const userResult = await conn.query('INSERT INTO User (Username, Email, FirstName, LastName, Address, Phone, PasswordHash, Salt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [username, email, firstname, lastname, address, phone, passwordHash, salt]);
     const userID = userResult.insertId;
-    await conn.query('INSERT INTO Payment (UserID, PaymentMethod, CardNumber, ExpiryDate) VALUES (?, ?, ?, ?)', [userID, paymentmethod, cardnumber, expirydate]);
     req.session.userID = userID.toString();
     res.redirect('/dashboard');
   } catch (err) {

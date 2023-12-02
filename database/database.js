@@ -11,10 +11,10 @@ dotenv.config();
 class storeDB {
      constructor() {
         this.pool = mariadb.createPool({
-            host: process.env.DB_HOST || 'localhost',
-            user: process.env.DB_USERNAME || 'default',
-            database: process.env.DB_NAME || 'database',
-            password: process.env.DB_PASSWORD || '12345',
+            host: process.env.DB_HOST || '174.48.236.56',
+            user: process.env.DB_USERNAME || 'susell',
+            database: process.env.DB_NAME || 'store',
+            password: process.env.DB_PASSWORD || 'test123*',
             connectionLimit: 5
         });
     }

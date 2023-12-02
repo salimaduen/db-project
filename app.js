@@ -17,6 +17,7 @@ import productsRouter from './routes/productRoute.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
+import checkoutRoutes from './routes/checkoutRoutes.js';
 
 
 // load .env variables
@@ -61,8 +62,14 @@ if (process.env.NODE_ENV === 'development') {
 app.use(indexRouter);
 app.use(authRouter);
 app.use(cartRoutes);
+app.use(checkoutRoutes);
 app.use('/dashboard', userRouter);
 app.use('/products', productsRouter);
+app.get('/order-success', (req, res) => {
+  res.render('success.pug'); 
+});
+
+
 
 
 
@@ -70,6 +77,8 @@ app.use('/products', productsRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
