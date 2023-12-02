@@ -2,6 +2,7 @@ extends layout
 
 block content 
     h1 Your Shopping Cart
+    - let total = 0.0;
     if Object.keys(items).length > 0
         - for (let item of items)
             .cart-item
@@ -9,8 +10,10 @@ block content
                 p Price: #{item.Price}
                 p Quantity: #{item.Quantity}
                 p Total: #{item.Price * item.Quantity}
+                - total += parseFloat(item.Price);
+                - console.log(`CURR : ${item.Price} TOTAL : ${total}`);
 
-        p.cart-total 
+        p.cart-total=total.toFixed(2)
 
     else
         p Your cart is empty

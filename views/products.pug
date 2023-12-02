@@ -21,7 +21,7 @@ block content
                 - let currProduct = products[(i*4) + j];
                 .column
                     a(href=`/products/${currProduct.Slug}`)
-                        img(src='/', alt=currProduct.Name)
+                        img(src=`/images/${currProduct.Slug}.png`, alt=currProduct.Name)
                         h2= currProduct.Name 
                         p= currProduct.Price
         

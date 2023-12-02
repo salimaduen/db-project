@@ -16,9 +16,6 @@ function calculateRows(productsLength) {
 
 class ProductController {
     
-    test() {
-        return 1;
-    }
 
     async getProducts(req, res) {
         try {

@@ -58,7 +58,7 @@ class Product {
         let results = null;
         try {
             const categoryID = (await conn.query(query, [categoryName]))[0].CategoryID;
-            query = `SELECT Product.Name, Product.Price
+            query = `SELECT Product.Name, Product.Price, Product.Slug
                      FROM ProductCategory
                      INNER JOIN Product ON ProductCategory.ProductID = Product.ProductID
                      WHERE ProductCategory.CategoryID = ?`;
@@ -112,8 +112,8 @@ class Product {
 
     /**
      * Function to add category to a product
-     * @param {string} productID 
-     * @param {string} categoryID 
+     * @param {int} productID 
+     * @param {int} categoryID 
      */
     static async addCategory(productID, categoryID) {
         const conn = await storeDB.getConnection();
