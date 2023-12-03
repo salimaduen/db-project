@@ -1,4 +1,4 @@
-CREATE TABLE ProductCategory (
+CREATE TABLE IF NOT EXISTS ProductCategory (
     ProductID INT,
     CategoryID INT,
     PRIMARY KEY (ProductID, CategoryID),

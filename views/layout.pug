@@ -1,6 +1,8 @@
 doctype html 
 html
     head
-        title test title
+        - if (!stylesheets) stylesheets = '/stylesheets/styles.css';
+        title= pageTitle ? pageTitle : 'Default Title'
+        link(rel='stylesheet', href=stylesheets, type='text/css')
     body
         block content

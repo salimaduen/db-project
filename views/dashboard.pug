@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Dashboard
+    link(rel='stylesheet', href='/stylesheets/dashboard.css')
+  body
+    header
+      nav.navbar
+        a.nav-link(href='/cart') Cart
+
+      h1 Dashboard
+
+    .container
+      .welcome-message
+        h2 Welcome, #{user.Username}!
+        a.button(href='/products') Go to Products
+
+      if user.Username == 'admin'
+        .admin-section
+          h2 Admin Dashboard
+          ul.admin-menu
+            li.admin-menu-item
+              a.admin-menu-link(href='/admin/update-product') Update Product
+            li.admin-menu-item
+              a.admin-menu-link(href='/admin/view-all-orders') View All Orders

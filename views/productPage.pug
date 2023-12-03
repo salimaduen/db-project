@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    .product-container 
+        .product-image
+            img(src=`/images/${product.Slug}.png`, alt='Product Image')
+        .product-details 
+            h1.product-name= product.Name
+            p.product-description= product.Description
+            p.product-price= product.Price
+            p.stock-quantity In Stock: #{product.StockQuantity}
+            a(href=`/add-to-cart/${product.Slug}`, class='add-to-cart-button') Add to Cart
+            

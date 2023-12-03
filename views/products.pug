@@ -3,5 +3,26 @@ extends layout
 block content 
     h1 Products Page!
     p This is the products page!
-    each product in products
-        li= product.Name
+
+    form(id='categoryForm', action='/products/filter-by-category', method='post')
+        select(id='categoryDropdown', name='category')
+            option(value='') All Categories
+            - for (let category of categories)
+                option(value=category.Name)= category.Name
+        button(type='submit') Filter
+
+    - let l = products.length;
+    - for (let i = 0; i < rows; i++)
+        .row
+            - let columns = 4;
+            - l = l - 4;
+            - if (l < 0) columns = columns + l;
+            - for (let j = 0; j < columns; j++)
+                - let currProduct = products[(i*4) + j];
+                .column
+                    a(href=`/products/${currProduct.Slug}`)
+                        img(src=`/images/${currProduct.Slug}.png`, alt=currProduct.Name)
+                        h2= currProduct.Name 
+                        p= currProduct.Price
+        
+        

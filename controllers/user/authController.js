@@ -1,11 +1,11 @@
-const bcrypt = require('bcrypt');
-const db = require('../config/db');
+import bcrypt from 'bcrypt';
+import db from '../../database/database.js';
 
-exports.login = (req, res) => {
+const login = (req, res) => {
   res.render('login');
 };
 
-exports.loginPost = async (req, res) => {
+const loginPost = async (req, res) => {
   const { username, password } = req.body;
   const query = 'SELECT * FROM User WHERE Username = ?';
   let conn;
@@ -32,12 +32,12 @@ exports.loginPost = async (req, res) => {
   }
 };
 
-exports.register = (req, res) => {
+const register = (req, res) => {
   res.render('register');
 };
 
-exports.registerPost = async (req, res) => {
-  const { username, email, firstname, lastname, address, phone, password } = req.body;
+const registerPost = async (req, res) => {
+  const { username, email, firstname, lastname, address, phone, password, } = req.body;
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password + salt, 10);
   let conn;
@@ -59,7 +59,7 @@ exports.registerPost = async (req, res) => {
   }
 };
 
-exports.logout = (req, res) => {
+const logout = (req, res) => {
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
@@ -68,4 +68,13 @@ exports.logout = (req, res) => {
         res.redirect('/login');
       }
     });
+};
+
+
+export default {
+  login,
+  loginPost,
+  register,
+  registerPost,
+  logout
 };
