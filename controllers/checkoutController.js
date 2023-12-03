@@ -22,6 +22,9 @@ const processCheckout = async (req, res) => {
     await conn.query('INSERT INTO Orders (UserID, OrderDate, Status, TotalPrice) VALUES (?, ?, ?, ?)', [req.session.userID, orderDate, orderStatus, totalPrice]);
 
 
+    const cart = (await conn.query('SELECT CartID FROM Cart WHERE UserID = ?', [req.session.userID]))[0];
+
+    await conn.query('DELETE FROM CartItem WHERE CartID = ?', [cart.CartID]);
     res.redirect('/order-success');
 } catch (error) {
     console.error(error);

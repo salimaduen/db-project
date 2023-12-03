@@ -2,6 +2,7 @@ extends layout
 
 block content 
     h1 Your Shopping Cart
+    - let total = 0.0;
     if items.length > 0
         each item in items
             .cart-item
@@ -12,7 +13,7 @@ block content
                 - total += parseFloat(item.Price);
                 - console.log(`CURR : ${item.Price} TOTAL : ${total}`);
 
-        p.cart-total  #{totalPrice}
+        p.cart-total  #{total.toFixed(2)}
         form(action="/checkout" method="get")
             button.buy-now(type="submit") Buy Now
     else
